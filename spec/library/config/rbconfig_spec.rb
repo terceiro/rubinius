@@ -88,8 +88,8 @@ end
 
 describe "RbConfig::MAKEFILE_CONFIG" do
   sitedir    = Rubinius::SITE_PATH
-  sitelibdir = Rubinius::SITE_PATH
-  arch       = "#{Rubinius::CPU}-#{Rubinius::OS}"
+  vendordir  = Rubinius::VENDOR_PATH
+  rbxversion = 'rbx-' + Rubinius::LIB_VERSION
 
   entries = {
     "exec_prefix"        => "$(prefix)",
@@ -112,10 +112,14 @@ describe "RbConfig::MAKEFILE_CONFIG" do
     "localedir"          => "$(datarootdir)/locale",
     "mandir"             => "$(datarootdir)/man",
     "ruby_version"       => "$(MAJOR).$(MINOR)",
-    "rubylibdir"         => sitelibdir,
-    "archdir"            => "#{sitelibdir}/#{arch}",
-    "sitearchdir"        => "#{sitelibdir}/#{arch}",
-    "sitedir"            => "#{sitedir}",
+    "rubylibdir"         => "$(libdir)/rubinius/#{rbxversion}",
+    "archdir"            => "$(rubylibdir)/$(arch)",
+    "sitedir"            => sitedir,
+    "sitelibdir"         => "$(sitedir)/#{rbxversion}",
+    "sitearchdir"        => "$(sitelibdir)/$(arch)",
+    "vendordir"          => vendordir,
+    "vendorlibdir"       => "$(vendordir)/#{rbxversion}",
+    "vendorarchdir"      => "$(vendorlibdir)/$(arch)",
   }
 
   it_has_entries 'RbConfig::MAKEFILE_CONFIG', entries

@@ -55,17 +55,19 @@ module RbConfig
 
   CONFIG["LIBS"]               = ""
 
-  sitedir                      = Rubinius::SITE_PATH
-  sitelibdir                   = sitedir
-  arch                         = "#{Rubinius::CPU}-#{Rubinius::OS}"
-
-  CONFIG["sitedir"]            = sitedir
-  CONFIG["sitelibdir"]         = sitelibdir
-  CONFIG["arch"]               = arch
-  CONFIG["sitearch"]           = arch
-  CONFIG["rubylibdir"]         = sitelibdir
-  CONFIG["archdir"]            = "#{sitelibdir}/#{arch}"
-  CONFIG["sitearchdir"]        = "#{sitelibdir}/#{arch}"
+  rubinius_version             = 'rbx-' + Rubinius::LIB_VERSION
+  # arch identification
+  CONFIG["arch"]               = "#{Rubinius::CPU}-#{Rubinius::OS}"
+  CONFIG["sitearch"]           = '$(arch)'
+  # paths
+  CONFIG["rubylibdir"]         = "$(libdir)/rubinius/#{rubinius_version}"
+  CONFIG["archdir"]            = '$(rubylibdir)/$(arch)'
+  CONFIG["sitedir"]            = Rubinius::SITE_PATH
+  CONFIG["sitelibdir"]         = "$(sitedir)/#{rubinius_version}"
+  CONFIG["sitearchdir"]        = "$(sitelibdir)/$(arch)"
+  CONFIG["vendordir"]          = Rubinius::VENDOR_PATH
+  CONFIG["vendorlibdir"]       = "$(vendordir)/#{rubinius_version}"
+  CONFIG["vendorarchdir"]      = '$(vendorlibdir)/$(arch)'
   CONFIG["topdir"]             = File.dirname(__FILE__)
   # some of these only relevant to cross-compiling
   cpu                          = Rubinius::CPU
