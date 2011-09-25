@@ -331,6 +331,8 @@ namespace :vm do
     end
 
     blueprint.clean
+
+    rm_rf FileList['vm/**/artifacts']
   end
 
   desc "Clean up, including all external libs"
