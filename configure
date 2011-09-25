@@ -92,6 +92,7 @@ class Configure
 
     # File system paths
     @bindir       = root + "/bin"
+    @bindir_extra = true
     @include18dir = root + "/vm/capi/18/include"
     @include19dir = root + "/vm/capi/19/include"
     @include20dir = root + "/vm/capi/19/include"
@@ -282,6 +283,10 @@ class Configure
     o.on "-B", "--bindir", "PATH", "Install Rubinius executable in PATH" do |dir|
       @install = true
       @bindir = expand dir
+    end
+
+    o.on "--disable-extra-programs", "Disables installation of extra programs besides rbx" do
+      @bindir_extra = false
     end
 
     o.on "-I", "--includedir", "PATH", "Install Rubinius C-API include files in PATH" do |dir|
@@ -1111,6 +1116,7 @@ module Rubinius
     :sizeof_long    => #{sizeof("long")},
     :x86_32         => #{@x86_32},
     :bindir         => "#{@bindir}",
+    :bindir_extra   => #{@bindir_extra},
     :libdir         => "#{@libdir}",
     :runtime        => "#{@runtime}",
     :kernel_path    => "#{@kernel_path}",

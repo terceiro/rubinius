@@ -148,19 +148,21 @@ namespace :install do
       exe = "#{BUILD_CONFIG[:bindir]}/#{BUILD_CONFIG[:program_name]}"
       install "vm/vm", install_dir(exe), :mode => 0755, :verbose => true
 
-      # Install the testrb command
-      testrb = "#{BUILD_CONFIG[:bindir]}/testrb"
-      install "bin/testrb", install_dir(testrb), :mode => 0755, :verbose => true
+      if BUILD_CONFIG[:bindir_extra]
+        # Install the testrb command
+        testrb = "#{BUILD_CONFIG[:bindir]}/testrb"
+        install "bin/testrb", install_dir(testrb), :mode => 0755, :verbose => true
 
-      # Create symlinks for common commands
-      begin
-        ["ruby", "rake", "gem", "irb", "rdoc", "ri"].each do |command|
-          name = install_dir("#{BUILD_CONFIG[:bindir]}/#{command}")
-          File.delete name if File.exists? name
-          File.symlink BUILD_CONFIG[:program_name], name
+        # Create symlinks for common commands
+        begin
+          ["ruby", "rake", "gem", "irb", "rdoc", "ri"].each do |command|
+            name = install_dir("#{BUILD_CONFIG[:bindir]}/#{command}")
+            File.delete name if File.exists? name
+            File.symlink BUILD_CONFIG[:program_name], name
+          end
+        rescue NotImplementedError
+          # ignore
         end
-      rescue NotImplementedError
-        # ignore
       end
 
       STDOUT.puts <<-EOM
