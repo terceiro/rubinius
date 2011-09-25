@@ -133,13 +133,15 @@ namespace :install do
       end
 
       # Install pre-installed gems
-      gems_dest = "#{BUILD_CONFIG[:gemsdir]}/rubinius/preinstalled"
-      FileList["preinstalled-gems/data/**/*"].each do |name|
-        install_file name, %r[^preinstalled-gems/data], gems_dest
-      end
+      if BUILD_CONFIG[:preinst_gems]
+        gems_dest = "#{BUILD_CONFIG[:gemsdir]}/rubinius/preinstalled"
+        FileList["preinstalled-gems/data/**/*"].each do |name|
+          install_file name, %r[^preinstalled-gems/data], gems_dest
+        end
 
-      FileList["preinstalled-gems/bin/*"].each do |name|
-        install_file name, /^preinstalled-gems/, BUILD_CONFIG[:gemsdir]
+        FileList["preinstalled-gems/bin/*"].each do |name|
+          install_file name, /^preinstalled-gems/, BUILD_CONFIG[:gemsdir]
+        end
       end
 
       # Install the Rubinius executable

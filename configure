@@ -101,6 +101,7 @@ class Configure
     @lib_path     = @libdir + "/lib"
     @mandir       = root + "/man"
     @gemsdir      = root + "/gems"
+    @preinst_gems = true
 
     # Some simple defaults for when running directly out of the build dir
     @sitedir      = @lib_path + "/site"
@@ -310,6 +311,10 @@ class Configure
     o.on "-G", "--gemsdir", "PATH", "Install gems in PATH" do |dir|
       @install = true
       @gemsdir = expand dir
+    end
+
+    o.on "--disable-preinstalled-gems", "Do not install pre-installed gems" do
+     @preinst_gems = false
     end
 
     o.on "--sitedir", "PATH", "Install site-specific Ruby code in PATH" do |dir|
@@ -1115,6 +1120,7 @@ module Rubinius
     :include20dir   => "#{@include20dir}",
     :mandir         => "#{@mandir}",
     :gemsdir        => "#{@gemsdir}",
+    :preinst_gems   => #{@preinst_gems},
     :sitedir        => "#{@sitedir}",
     :vendordir      => "#{@vendordir}",
     :program_name   => "#{@program_name}",
