@@ -335,7 +335,9 @@ namespace :vm do
   end
 
   desc "Clean up, including all external libs"
-  task :distclean => :clean
+  task :distclean => :clean do
+    rm_f 'vm/gen/config.h'
+  end
 
   desc "Show which primitives are missing"
   task :missing_primitives do
